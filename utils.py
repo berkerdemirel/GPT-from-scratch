@@ -3,7 +3,18 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from dataset import ShakespeareDataset
+import os
+import requests
 from typing import Dict, Union, Tuple
+
+
+def download_data(input_file_path: str):
+    if not os.path.exists(input_file_path):
+        print("Downloading dataset...")
+        data_url = 'https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt'
+        with open(input_file_path, 'w') as f:
+            f.write(requests.get(data_url).text)
+        print("Dataset is downloaded to {}".format(input_file_path))
 
 
 def return_dataset(
@@ -12,7 +23,7 @@ def return_dataset(
         block_size: int
     ) -> Tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
 
-    with open("input.txt", 'r', encoding='utf-8') as f:
+    with open(data_path, 'r', encoding='utf-8') as f:
         text = f.read()
     characters = sorted(list(set(text)))
     dataset_len = len(text)
@@ -27,7 +38,7 @@ def return_dataset(
 
 
 if __name__ == "__main__":
-    path = "input.txt"
+    path = "./input.txt"
     split = 0.8
     block_size = 256
 

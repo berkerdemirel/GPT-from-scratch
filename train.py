@@ -6,7 +6,7 @@ import os
 import time
 from typing import Dict, Union, Tuple
 from model import GPT
-from utils import return_dataset
+from utils import download_data, return_dataset
 
 
 def train_one_epoch(
@@ -86,6 +86,9 @@ if __name__ == "__main__":
     n_layers = 6
     device_id = 0
     checkpoint_dir = "./results/"
+
+    # download data
+    download_data(data_path)
 
     # create checkpoint directory
     os.makedirs(checkpoint_dir, exist_ok=True) # create directory
